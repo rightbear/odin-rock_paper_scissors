@@ -12,10 +12,10 @@ function getHumanChoice(){
     let choice;
 
     do {
-        choice = prompt(`Please enter your choice. Rock, Paper or Scissors? Spelling needs to be exact, but capitalization doesn't matter`);
+        choice = null;//prompt(`Please enter your choice. Rock, Paper or Scissors? Spelling needs to be exact, but capitalization doesn't matter`);
         if(choice === null){                //Check whether the "Cancel" button is clicked.
             alert("The game cannot be canceled");
-            continue;
+            break;
         }
         else{
             if(validateInput(choice)){
@@ -79,22 +79,21 @@ function playGame(){
 
     console.log('It\'s the game time');
 
-    for(let round=1 ; round<=5 ; round++){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+    
+    const humanSelection = getHumanChoice();
+    const computerSelection = getComputerChoice();
 
-        //Start every round of the game
-        console.log(`Round ${round}: ${playRound(humanSelection, computerSelection)}`);
-        console.log('------------------------------------------');
-        const winner = checkWinner(humanSelection, computerSelection);
+    //Start every round of the game
+    console.log(`${playRound(humanSelection, computerSelection)}`);
+    console.log('------------------------------------------');
+    const winner = checkWinner(humanSelection, computerSelection);
 
-        //Update winner's score after eery round
-        if(winner == "Player"){
-            humanScore++;
-        }
-        else if (winner == "Computer"){
-            computerScore++;
-        }
+    //Update winner's score after eery round
+    if(winner == "Player"){
+        humanScore++;
+    }
+    else if (winner == "Computer"){
+        computerScore++;
     }
 
     //Show the result of final winner
@@ -110,5 +109,25 @@ function playGame(){
         console.log("We have a tie");
     }
 }
+
+
+let buttons = document.querySelector('#buttons');
+
+buttons.addEventListener('click', (event) => {
+    let target = event.target;
+    let playerSelection ;
+
+    switch(target.id) {
+        case 'rock':
+            playerSelection = "Rock";
+            break;
+        case 'paper':
+            playerSelection = "Paper";
+            break;
+        case 'scissors':
+            playerSelection = "Scissors";
+            break;
+    }
+});
 
 playGame();

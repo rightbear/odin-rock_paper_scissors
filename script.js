@@ -100,6 +100,7 @@ optionButtons.addEventListener('click', function ModifySelection(event){
         else if(humanScore < computerScore){
             resultMessage.innerHTML +=("<p>Computer is the final winner</p>");
         }
+        resultMessage.style.textAlign= "center";
     
         gameRegion.appendChild(resultMessage);
     }

@@ -7,40 +7,6 @@ function getComputerChoice(){
     return choice;
 }
 
-// Retrieve the choice of player in every round
-function getHumanChoice(){
-    let choice;
-
-    do {
-        choice = null;//prompt(`Please enter your choice. Rock, Paper or Scissors? Spelling needs to be exact, but capitalization doesn't matter`);
-        if(choice === null){                //Check whether the "Cancel" button is clicked.
-            alert("The game cannot be canceled");
-            break;
-        }
-        else{
-            if(validateInput(choice)){
-                choice = choice.at(0).toUpperCase() + choice.slice(1).toLowerCase();  // Turn the first character of every choice to uppercase
-                return choice;
-            }
-            else{
-                alert(`Please make sure your input is Rock, Paper or Scissors`);
-                continue;
-            }
-        }
-        
-    } while(true);
-}
-
-// Validate whether user's choice is legal and not empty innitially
-function validateInput(choice){
-    let choiceLowercase = choice.toLowerCase();
-    if(options.includes(choiceLowercase)){    //Check whether the input is Rock, Paper or Scissors.
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 
 // Receive the choice of player and computer, and generate information of winner in every round
 function playRound(humanChoice, computerChoice) {
@@ -74,8 +40,6 @@ function checkWinner(humanChoice, computerChoice){
 
 //Start the game
 function playGame(playerSelection){
-
-    console.log('It\'s the game time');
     
     const humanSelection = playerSelection;
     const computerSelection = getComputerChoice();
@@ -92,28 +56,17 @@ function playGame(playerSelection){
     else if (winner == "Computer"){
         computerScore++;
     }
-
-    //Show the result of final winner
-    console.log('Game Over');
-    console.log(`Human Score is ${humanScore}\nComputer Score is ${computerScore}`);
-    if(humanScore > computerScore){
-        console.log("Player is the final winner");
-    }
-    else if(humanScore < computerScore){
-        console.log("Computer is the final winner");
-    }
-    else{
-        console.log("We have a tie");
-    }
 }
 
 let humanScore = 0;
 let computerScore  = 0;
+console.log('It\'s the game time');
 
 let buttons = document.querySelector('#buttons');
 
 // Add event listeners for three buttons 
-buttons.addEventListener('click', (event) => {
+
+optionButtons.addEventListener('click', function ModifySelection(event){
     let target = event.target;
     let playerSelection ;
 
@@ -132,4 +85,22 @@ buttons.addEventListener('click', (event) => {
 
     // After clicking the buttons, the game will starts
     playGame(playerSelection);
+
+    if (humanScore == 5 || computerScore == 5){
+        const gameRegion = document.querySelector("#gameRegion");
+    
+        const resultMessage = document.createElement("div");
+        resultMessage.setAttribute("id", "result");
+        resultMessage.innerHTML = '<p>Game Over:</p>';
+        resultMessage.innerHTML += `<p>Human Score is ${humanScore}<br>Computer Score is ${computerScore}</p>`;
+    
+        if(humanScore > computerScore){
+            resultMessage.innerHTML +=("<p>Player is the final winner</p>");
+        }
+        else if(humanScore < computerScore){
+            resultMessage.innerHTML +=("<p>Computer is the final winner</p>");
+        }
+    
+        gameRegion.appendChild(resultMessage);
+    }
 });

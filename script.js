@@ -1,15 +1,8 @@
+// Retrieve the choice of computer in every round
 function getComputerChoice(){
-    let num = Math.floor(Math.random() * 98) + 1;
-
-    if(num % 3 == 0){
-        return ("Rock");
-    }
-    else if(num % 3 == 1){
-        return ("Paper");
-    }
-    else if(num % 3 == 2){
-        return ("Scissors");
-    }
+    const option = ['Rock', 'Paper', 'Scissors'];
+    const choice = option[Math.floor(Math.random() * option.length)]
+    return choice;
 }
 
 function getHumanChoice(round){
@@ -71,7 +64,7 @@ function playGame(){
     let humanScore = 0;
     let computerScore  = 0;
 
-    for(let round=1 ; round<=5 ; round++){
+    for(let round=1 ; round<=1 ; round++){
         const humanSelection = getHumanChoice(round);
         const computerSelection = getComputerChoice();
 

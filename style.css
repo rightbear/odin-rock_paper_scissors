@@ -22,3 +22,15 @@ body {
     flex-direction: column;
     margin: auto;
 }
+
+#buttons{
+    height: 100px;
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+p{
+    text-align: center;
+}

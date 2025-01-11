@@ -43,10 +43,8 @@ function playGame(playerSelection){
     
     const humanSelection = playerSelection;
     const computerSelection = getComputerChoice();
+    round++;
 
-    //Start every round of the game
-    console.log(`${playRound(humanSelection, computerSelection)}`);
-    console.log('------------------------------------------');
     const winner = checkWinner(humanSelection, computerSelection);
 
     //Update winner's score after eery round
@@ -56,52 +54,101 @@ function playGame(playerSelection){
     else if (winner == "Computer"){
         computerScore++;
     }
+
+    //Start every round of the game
+    return (`Round ${round}: ${playRound(humanSelection, computerSelection)}`);
 }
 
 let humanScore = 0;
 let computerScore  = 0;
+let round= 0;
 console.log('It\'s the game time');
 
-let buttons = document.querySelector('#buttons');
+const buttons = document.querySelector('#buttons');
+const resultMessage = document.querySelector('#textResult');
 
-// Add event listeners for three buttons 
+// Add event listeners buttons 
 
-optionButtons.addEventListener('click', function ModifySelection(event){
+buttons.addEventListener('click', function ModifySelection(event){
     let target = event.target;
     let playerSelection ;
 
-    // Every button symbol different choice made by player in the game
-    switch(target.id) {
-        case 'rock':
-            playerSelection = "Rock";
-            break;
-        case 'paper':
-            playerSelection = "Paper";
-            break;
-        case 'scissors':
-            playerSelection = "Scissors";
-            break;
+    // If 'Start' button is clicked, substitued it with option button
+    if(target.id == 'start' || target.id == 'next'){
+        buttons.removeChild(target);
+        
+        const rockButton = document.createElement('button');
+        rockButton.textContent = "Rock";
+        rockButton.setAttribute("id", "rock");
+
+        const paperButton = document.createElement('button');
+        paperButton.textContent = "Paper";
+        paperButton.setAttribute("id", "paper");
+
+        const sciButton = document.createElement('button');
+        sciButton.textContent = "Scissors";
+        sciButton.setAttribute("id", "scissors");
+
+        buttons.appendChild(rockButton);
+        buttons.appendChild(paperButton);
+        buttons.appendChild(sciButton);
+
+        resultMessage.textContent = "Select an option."
     }
+    else if(target.id == 'reset'){
+        buttons.removeChild(target);
+        const startButton = document.createElement('button');
+        startButton.textContent = "Start";
+        startButton.setAttribute("id", "start");
+        buttons.appendChild(startButton);
 
-    // After clicking the buttons, the game will starts
-    playGame(playerSelection);
+        resultMessage.textContent = "It's game time!";
+    }
+    else if(target.id == 'rock' || target.id == 'paper' || target.id == 'scissors'){
+        // Every button symbol different choice made by player in the game
+        switch(target.id) {
+            case 'rock':
+                playerSelection = "Rock";
+                break;
+            case 'paper':
+                playerSelection = "Paper";
+                break;
+            case 'scissors':
+                playerSelection = "Scissors";
+                break;
+        }
 
-    if (humanScore == 5 || computerScore == 5){
-        const gameRegion = document.querySelector("#gameRegion");
-    
-        const resultMessage = document.createElement("div");
-        resultMessage.setAttribute("id", "result");
-        resultMessage.innerHTML = '<p>Game Over:</p>';
-        resultMessage.innerHTML += `<p>Human Score is ${humanScore}<br>Computer Score is ${computerScore}</p>`;
-    
-        if(humanScore > computerScore){
-            resultMessage.innerHTML +=("<p>Player is the final winner</p>");
+        // After clicking the option buttons, the game will starts
+        resultMessage.innerHTML = `${playGame(playerSelection)}`;
+
+        while (buttons.firstChild) {
+            buttons.removeChild(buttons.firstChild);
         }
-        else if(humanScore < computerScore){
-            resultMessage.innerHTML +=("<p>Computer is the final winner</p>");
+
+        if (humanScore == 5 || computerScore == 5){
+            resultMessage.innerHTML += '<p>Game Over:</p>';
+            resultMessage.innerHTML += `<p>Human Score is ${humanScore}<br>Computer Score is ${computerScore}</p>`;
+        
+            if(humanScore > computerScore){
+                resultMessage.innerHTML +=("<p>Player is the final winner</p>");
+            }
+            else if(humanScore < computerScore){
+                resultMessage.innerHTML +=("<p>Computer is the final winner</p>");
+            }
+        
+            const resetButton = document.createElement('button');
+            resetButton.textContent = "Reset";
+            resetButton.setAttribute("id", "reset");
+
+            buttons.appendChild(resetButton);
         }
-        resultMessage.style.textAlign= "center";
-    
-        gameRegion.appendChild(resultMessage);
+        else{
+            const nextButton = document.createElement('button');
+            nextButton.textContent = "Next Round";
+            nextButton.setAttribute("id", "next");
+            buttons.appendChild(nextButton);
+
+            resultMessage.innerHTML += `<p>Human Score is ${humanScore}<br>Computer Score is ${computerScore}</p>`;
+        }
     }
 });

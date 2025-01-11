@@ -1,39 +1,40 @@
 // Retrieve the choice of computer in every round
+const options = ['rock', 'paper', 'scissors'];
+
 function getComputerChoice(){
-    const option = ['Rock', 'Paper', 'Scissors'];
-    const choice = option[Math.floor(Math.random() * option.length)]
+    let choice = options[Math.floor(Math.random() * options.length)]
+    choice = choice.at(0).toUpperCase() + choice.slice(1).toLowerCase();  // Turn the first character of every choice to uppercase
     return choice;
 }
 
 // Retrieve the choice of player in every round
-function getHumanChoice(round){
+function getHumanChoice(){
     let choice;
-    let check;
 
     do {
-        choice = prompt(`Round ${round}: Please enter your choice. Rock, Paper or Scissors? Spelling needs to be exact, but capitalization doesn't matter.`);
+        choice = prompt(`Please enter your choice. Rock, Paper or Scissors? Spelling needs to be exact, but capitalization doesn't matter`);
         if(choice === null){                //Check whether the "Cancel" button is clicked.
-            alert("The game cannot be canceled.");
+            alert("The game cannot be canceled");
+            continue;
         }
         else{
-            check = validateInput(choice);
-
-            if(check){
-                choice = choice.at(0).toUpperCase() + choice.slice(1).toLowerCase();
+            if(validateInput(choice)){
+                choice = choice.at(0).toUpperCase() + choice.slice(1).toLowerCase();  // Turn the first character of every choice to uppercase
                 return choice;
             }
             else{
-                alert(`Please make sure your input is Rock, Paper or Scissors.`); 
+                alert(`Please make sure your input is Rock, Paper or Scissors`);
+                continue;
             }
         }
         
     } while(true);
 }
 
-// Validate whether user's choice is legal innitially
+// Validate whether user's choice is legal and not empty innitially
 function validateInput(choice){
-    choice = choice.toLowerCase();
-    if(choice == "rock" || choice == "paper" || choice == "scissors"){    //Check whether the input is Rock, Paper or Scissors.
+    let choiceLowercase = choice.toLowerCase();
+    if(options.includes(choiceLowercase)){    //Check whether the input is Rock, Paper or Scissors.
         return true;
     }
     else{
@@ -41,22 +42,22 @@ function validateInput(choice){
     }
 }
 
-// Receive the choice of player and computer
+// Receive the choice of player and computer, and generate information of winner in every round
 function playRound(humanChoice, computerChoice) {
     const result =  checkWinner(humanChoice, computerChoice);
 
     if(result == "Player"){
-        return (`Player wins! ${humanChoice} beats ${computerChoice}.`);
+        return (`Player wins! ${humanChoice} beats ${computerChoice}`);
     }
     else if(result == "Computer"){
-        return (`Computer wins! ${computerChoice} beats ${humanChoice}.`);
+        return (`Computer wins! ${computerChoice} beats ${humanChoice}`);
     }
     else{
-        return (`Player ties Computer! ${computerChoice} ties ${humanChoice}.`);
+        return (`Player ties Computer! ${computerChoice} ties ${humanChoice}`);
     }
 }
 
-// Compare the choice of player and computer
+// Compare the choice of player and computer, and genereate the winner
 function checkWinner(humanChoice, computerChoice){
     if (((humanChoice == "Rock") && (computerChoice == "Scissors")) || (humanChoice == "Scissors") && (computerChoice == "Paper")
         || (humanChoice == "Paper") && (computerChoice == "Rock")){
@@ -76,14 +77,38 @@ function playGame(){
     let humanScore = 0;
     let computerScore  = 0;
 
-    for(let round=1 ; round<=1 ; round++){
-        const humanSelection = getHumanChoice(round);
+    console.log('It\'s the game time');
+
+    for(let round=1 ; round<=5 ; round++){
+        const humanSelection = getHumanChoice();
         const computerSelection = getComputerChoice();
 
-        console.log(playRound(humanSelection, computerSelection));
+        //Start every round of the game
+        console.log(`Round ${round}: ${playRound(humanSelection, computerSelection)}`);
+        console.log('------------------------------------------');
+        const winner = checkWinner(humanSelection, computerSelection);
+
+        //Update winner's score after eery round
+        if(winner == "Player"){
+            humanScore++;
+        }
+        else if (winner == "Computer"){
+            computerScore++;
+        }
     }
 
-    alert(`Human Score is ${humanScore}.\nComputer Score is ${computerScore}.`);
+    //Show the result of final winner
+    console.log('Game Over');
+    console.log(`Human Score is ${humanScore}\nComputer Score is ${computerScore}`);
+    if(humanScore > computerScore){
+        console.log("Player is the final winner");
+    }
+    else if(humanScore < computerScore){
+        console.log("Computer is the final winner");
+    }
+    else{
+        console.log("We have a tie");
+    }
 }
 
 playGame();

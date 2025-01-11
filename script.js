@@ -73,14 +73,11 @@ function checkWinner(humanChoice, computerChoice){
 }
 
 //Start the game
-function playGame(){
-    let humanScore = 0;
-    let computerScore  = 0;
+function playGame(playerSelection){
 
     console.log('It\'s the game time');
-
     
-    const humanSelection = getHumanChoice();
+    const humanSelection = playerSelection;
     const computerSelection = getComputerChoice();
 
     //Start every round of the game
@@ -110,13 +107,17 @@ function playGame(){
     }
 }
 
+let humanScore = 0;
+let computerScore  = 0;
 
 let buttons = document.querySelector('#buttons');
 
+// Add event listeners for three buttons 
 buttons.addEventListener('click', (event) => {
     let target = event.target;
     let playerSelection ;
 
+    // Every button symbol different choice made by player in the game
     switch(target.id) {
         case 'rock':
             playerSelection = "Rock";
@@ -128,6 +129,7 @@ buttons.addEventListener('click', (event) => {
             playerSelection = "Scissors";
             break;
     }
-});
 
-playGame();
+    // After clicking the buttons, the game will starts
+    playGame(playerSelection);
+});

@@ -91,8 +91,12 @@ function enterNewRound(target){
     resultMessage.textContent = "Select an option."
 }
 
-// Remove 'Restart' button, them add 'Start' buttons and reminder message
+// Remove 'Restart' button, then add 'Start' buttons and reminder message. Reset all score values and round value as well.
 function resetAllGame(target){
+    humanScore = 0;
+    computerScore  = 0;
+    round= 0;
+
     buttons.removeChild(target);
     const startButton = document.createElement('button');
     startButton.textContent = "Start";
